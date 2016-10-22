@@ -1,0 +1,60 @@
+Authentication using routes and JWT
+-----------------------------------
+
+https://gitter.im/lhorie/mithril.js?at=55a39b2fadc533306a5d73f8
+
+@cyberco I've got an API where i can post a username and password to /tokens which returns a jwt including role and role description if authenticated. In mithril I've created an api.js which wraps an m.request that basically looks like this:
+api.request(options) {
+  options.config = function(xhr) {
+    xhr.setRequestHeader('Authorization', 'Bearer ' + api.token())
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')  
+  }
+  m.request(options)
+}
+Then everywhere in my app when i want to access the api i use api.request() instead of m.request()
+The api.token function could look like this:
+api.token = function(value) {
+  if (arguments.length)
+    localStorage.setItem('token', value)
+
+  return localStorage.getItem('token')
+}
+Then you could also use api.token() in your route to decide if you want to show a login screen. And you could clear it if you ever receive a 401 on a request. (resulting in the login screen becoming displayed again)
+
+Rasmus Porsager @porsager Jul 13 2015 23:09
+Or use sessionStorage if you don't want the token to stay after closing the page
+
+--------
+
+https://gitter.im/lhorie/mithril.js?at=553b5129dcf9be9c3da2b498
+
+Barney Carroll @barneycarroll Apr 25 2015 20:24
+Well I use it when authentication status changes
+So the way I do authentication is I store a token locally, which is added as a header to all XHR
+I get that token when I send the user to authenticate with a third party account service (Google ,Github), and they get redirected to my app with the token in the hash
+
+Barney Carroll @barneycarroll Apr 25 2015 20:22
+This doesn't address your issue @tobscure but FWIW you can overcome a lot of apparent limitations in m.route by reinitialising m.route when things change
+
+Toby Zerner @tobscure Apr 25 2015 20:23
+interesting, examples?
+
+Barney Carroll @barneycarroll Apr 25 2015 20:32
+So on initialisation:
+if( tokenInHash ){
+    // User has just been authenticated!
+    m.route( body, '/profile', routes.authenticated )
+}
+else if( localToken ){
+    // We already have a token, could still be valid
+    m.route( body, '/login', routes.waiting )
+
+    validate( localToken ).then(
+        success => m.route( body, '/profile', routes.authenticated ),
+        failure => m.route( body, '/login',   routes.lockedOut )
+    )
+}
+else {
+    m.route( body, '/signup', routes.lockedOut )
+}
+routes.authenticated is the full blown app. routes.lockedOut has a signup and a login route. routes.waiting is similar, except it also has a wildcard path which shows a loading splash screen
