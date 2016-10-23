@@ -1,0 +1,22 @@
+{
+  "name": "cell-ui-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s23m/cell-ui-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s23m/cell-ui-web/issues"
+  },
+  "homepage": "https://github.com/s23m/cell-ui-web#readme",
+  "dependencies": {
+    "mithril": "github:lhorie/mithril.js#rewrite"
+  }
+}
