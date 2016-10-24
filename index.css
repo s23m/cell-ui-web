@@ -1,0 +1,66 @@
+body {
+  /* Font choices used on Wordpress, Coding Horror, and elsewhere */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.outer-container {
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+}
+.dark {
+  background-color: #bbb;
+}
+.dark-inline {
+  margin: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 7px;
+  background-color: #bbb;
+
+  border-radius: 5px;
+}
+
+.light {
+  background-color: #ddd;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+}
+.logo {
+  background: #FF4545;
+  display: block;
+  margin: 5px;
+  border: 2px solid #FF4545;
+  border-radius: 5px;
+  width: 25px;
+  text-align: center;
+
+  float: right;
+  clear: both;
+}
+
+.dark-inline .logo {
+  margin: 0;
+}
+
+.title {
+  display: inline-block;
+  height: 25px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+input {
+  height: 20px;
+}
+
+#login-btn {
+  float: right;
+}
+
+input,
+.title {
+  margin-right: 5px;
+}
