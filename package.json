@@ -1,10 +1,12 @@
 {
   "name": "cell-ui-web",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Web-based UI for Cell Platform",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "build": "mkdir -p dist && browserify src/*.js src/**/*.js -t cssobjectify -p [minifyify --no-map] -o dist/bundle.js",
+    "watch": "mkdir -p dist && watchify src/*.js src/**/*.js -t cssobjectify -o dist/bundle.js --debug --verbose"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,12 @@
   },
   "homepage": "https://github.com/s23m/cell-ui-web#readme",
   "dependencies": {
+    "express": "^4.12.4",
     "mithril": "github:lhorie/mithril.js#rewrite"
+  },
+  "devDependencies": {
+    "browserify": "*",
+    "cssobjectify": "0.2.1",
+    "minifyify": "*"
   }
 }
