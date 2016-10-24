@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "mkdir -p dist && browserify src/*.js src/**/*.js -t cssobjectify -p [minifyify --no-map] -o dist/bundle.js",
-    "watch": "mkdir -p dist && watchify src/*.js src/**/*.js -t cssobjectify -o dist/bundle.js --debug --verbose"
+    "build": "mkdir -p dist && cp src/index.* dist/ && browserify src/*.js src/**/*.js -t cssobjectify -p [minifyify --no-map] -o dist/index.js",
+    "watch": "mkdir -p dist && cp src/index.* dist/ && watchify src/*.js src/**/*.js -t cssobjectify -o dist/index.js --debug --verbose"
   },
   "repository": {
     "type": "git",
