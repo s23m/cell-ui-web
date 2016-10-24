@@ -25,6 +25,7 @@
   "devDependencies": {
     "browserify": "*",
     "cssobjectify": "0.2.1",
-    "minifyify": "*"
+    "minifyify": "*",
+    "watchify": "*"
   }
 }
