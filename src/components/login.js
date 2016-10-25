@@ -4,7 +4,27 @@ var m = require('mithril');
 
 console.log('login.js');
 
-module.exports = {
+var password = m.prop()
+var username = m.prop()
+
+var Login = {
+
+  submit: function(username, password) {
+    console.log('submit(' + username + ', ' + password + ')');
+    
+    var data = JSON.stringify({"username": username, "password": password});
+  
+    m.request({
+      method: "POST",
+      url: "/api/login",
+      data: data
+    })
+    .run(function(users) {
+      console.log(users)
+    });
+    
+  },
+
   view: function(vnode) {
   
     console.log('login.js view function');
@@ -20,21 +40,29 @@ module.exports = {
           m("span.logo", "SN"),
           m("div", [
             m(".dark-inline", [
-              m("input[type='text'][value='Joe Bloggs']"),
+              m("input[type='text']", {
+                oninput: m.withAttr("value", username),
+                value: username()
+              }),
               ":",
               m("span.logo", "UE")
             ])
           ]),
           m(".dark-inline", [
-            m("input[type='password'][value='abc']"),
+            m("input[type='password']", {
+              oninput: m.withAttr("value", password),
+              value: password()
+            }),
             ":",
             m("span.logo", "PD")
           ])
         ]),
         m("div", [
-          m("button[id='login-btn']", "Log on")
+          m("button[id='login-btn']", {onclick: function(){ Login.submit(username(), password()) } }, "Log on")
         ])
       ])
 		]
   }
 }
+
+module.exports = Login
