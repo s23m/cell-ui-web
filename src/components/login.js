@@ -13,14 +13,18 @@ var Login = {
     console.log('submit(' + username + ', ' + password + ')');
     
     var data = JSON.stringify({"username": username, "password": password});
+    
+    console.log('data: '+ data);
   
-    m.request({
+    var req = m.request({
       method: "POST",
       url: "/api/login",
-      data: data
-    })
-    .run(function(users) {
-      console.log(users)
+      data: {"username": username, "password": password}
+    });
+    
+    console.log('error: ' + req.error());
+    req.run(function(result) {
+      console.log('result: ' + JSON.stringify(result));
     });
     
   },
