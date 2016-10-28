@@ -1,6 +1,7 @@
 'use strict';
 
 var m = require('mithril');
+var api = require('./api');
 
 console.log('login.js');
 
@@ -11,28 +12,37 @@ var Login = {
 
   submit: function(username, password) {
     console.log('submit(' + username + ', ' + password + ')');
-    
+
     var data = JSON.stringify({"username": username, "password": password});
-    
+
     console.log('data: '+ data);
-  
-    var req = m.request({
+
+    var req = api.request({
       method: "POST",
       url: "/api/login",
       data: {"username": username, "password": password}
     });
-    
+
     console.log('error: ' + req.error());
     req.run(function(result) {
       console.log('result: ' + JSON.stringify(result));
+
+      /* TODO move to api.js */
+      var token = result.token;
+      console.log('saving / updating token: ' + token);
+      api.token(token);
+
+      if (api.hasValidToken()) {
+        /* show dashboard */
+        m.route.set('/dashboard');
+      }
     });
-    
   },
 
   view: function(vnode) {
-  
+
     console.log('login.js view function');
-    
+
     return [
       m(".outer-container.dark", [
         m("span.title", "S23M Production Root"),
