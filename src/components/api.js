@@ -36,9 +36,9 @@ var api = {
     console.log('login(' + username + ', ' + password + ')');
 
     var data = {"username": username, "password": password};
-    var options = {method: "POST", url: "/api/login", data: data};
+    var options = {method: "POST", url: "/api/login", data: data, async: false};
 
-    return api.request(options).run(function(result) {
+    var requestValue = api.request(options).run(function(result) {
       console.log('result: ' + JSON.stringify(result));
 
       var token = result.token;
@@ -50,7 +50,10 @@ var api = {
     }).catch(function(e) {
       console.log('error: ' + e);
       return false;
-    });
+    }).valueOf();
+
+    console.log('requestValue: ' + requestValue);
+    return requestValue;
   },
 
   token: function(value) {

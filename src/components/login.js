@@ -28,6 +28,7 @@ var Login = {
 
   submit: function(user, pass) {
     var validCredentials = api.login(user, pass);
+    console.log('validCredentials: ' + validCredentials);
     if (validCredentials) {
       /* clear fields and show dashboard */
       password('');
