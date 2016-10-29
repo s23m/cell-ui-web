@@ -12,10 +12,11 @@ var username = m.prop()
 var watchInput = function(ontype, onenter, onescape) {
   console.log('watchInput');
   return function(e) {
-    console.log('e.keyCode: ' + e.keyCode);
-
     ontype(e);
-    if (e.keyCode === 13 && onenter) onenter();
+    if (e.keyCode === 13 && onenter) {
+      console.log('enter key pressed');
+      onenter();
+    }
     if (e.keyCode === 27 && onescape) onescape();
   }
 };
