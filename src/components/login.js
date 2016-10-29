@@ -61,7 +61,13 @@ var Login = {
           m("span.logo", "SN"),
           m("div", [
             m(".dark-inline", [
-              m("input[type='text']", {
+              m('input[type="text"]', {
+                oncreate: function(el, init) {
+                  console.log('in oncreate: ' + init);
+                  if (!init) {
+                    el.dom.focus();
+                  }
+                },
                 oninput: m.withAttr('value', username),
                 value: username()
               }),
