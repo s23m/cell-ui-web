@@ -10,10 +10,12 @@ var username = m.prop()
 
 var Login = {
 
-  submit: function(username, password) {
-    var validCredentials = api.login(username, password);
+  submit: function(user, pass) {
+    var validCredentials = api.login(user, pass);
     if (validCredentials) {
-      /* show dashboard */
+      /* clear fields and show dashboard */
+      password('');
+      username('');
       console.log('showing dashboard');
       m.route.set('/dashboard');
     } else {
