@@ -8,6 +8,22 @@ console.log('login.js');
 var password = m.prop()
 var username = m.prop()
 
+/* See https://github.com/jpmonette/todomvc-mithril/blob/master/js/views/main-view.js */
+var watchInput = function(ontype, onenter, onescape) {
+  console.log('watchInput');
+  return function(e) {
+    console.log('e.keyCode: ' + e.keyCode);
+
+    ontype(e);
+    if (e.keyCode === 13 && onenter) onenter();
+    if (e.keyCode === 27 && onescape) onescape();
+  }
+};
+
+var handleLoginAttempt = function() {
+  Login.submit(username(), password());
+}
+
 var Login = {
 
   submit: function(user, pass) {
@@ -40,7 +56,7 @@ var Login = {
           m("div", [
             m(".dark-inline", [
               m("input[type='text']", {
-                oninput: m.withAttr("value", username),
+                oninput: m.withAttr('value', username),
                 value: username()
               }),
               ":",
@@ -49,7 +65,10 @@ var Login = {
           ]),
           m(".dark-inline", [
             m("input[type='password']", {
-              oninput: m.withAttr("value", password),
+              onkeypress: watchInput(
+                m.withAttr('value', password),
+                handleLoginAttempt
+              ),
               value: password()
             }),
             ":",
@@ -58,7 +77,7 @@ var Login = {
         ]),
         m("div", [
           m("button[id='login-btn']", {
-            onclick: function(){ Login.submit(username(), password()) }
+            onclick: handleLoginAttempt
           }, "Log on")
         ])
       ])
