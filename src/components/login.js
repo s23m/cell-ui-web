@@ -27,18 +27,23 @@ var handleLoginAttempt = function() {
 var Login = {
 
   submit: function(user, pass) {
-    var validCredentials = api.login(user, pass);
-    console.log('validCredentials: ' + validCredentials);
-    if (validCredentials) {
-      /* clear fields and show dashboard */
-      password('');
-      username('');
-      console.log('showing dashboard');
-      m.route.set('/dashboard');
-    } else {
-      /* TODO: show validation error */
-      console.log('invalid credentials');
-    }
+    var req = api.login(user, pass);
+    req.run(function(validCredentials) {
+      console.log('in login - validCredentials: ' + validCredentials);
+      if (validCredentials) {
+        // clear fields and show dashboard
+        password('');
+        username('');
+        console.log('showing dashboard');
+        m.route.set('/dashboard');
+      } else {
+        console.log('invalid credentials');
+      }
+    });
+
+    req.error.run(function(data) {
+      console.log('in login - error: ' + data);
+    })
   },
 
   view: function(vnode) {

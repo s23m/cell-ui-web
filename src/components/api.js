@@ -33,12 +33,16 @@ var api = {
 
   /* Submits a login request and returns a boolean indicating whether the attempt was successful */
   login: function(username, password) {
-    console.log('login(' + username + ', ' + password + ')');
+    var options = {
+      method: 'POST',
+      url: '/api/login',
+      data: {
+        'username': username,
+        'password': password
+      }
+    };
 
-    var data = {"username": username, "password": password};
-    var options = {method: "POST", url: "/api/login", data: data, async: false};
-
-    var requestValue = api.request(options).run(function(result) {
+    var processAttempt = function(result) {
       console.log('result: ' + JSON.stringify(result));
 
       var token = result.token;
@@ -47,13 +51,9 @@ var api = {
       var validCredentials = api.hasValidToken();
       console.log('validCredentials: ' + validCredentials);
       return validCredentials;
-    }).catch(function(e) {
-      console.log('error: ' + e);
-      return false;
-    }).valueOf();
+    };
 
-    console.log('requestValue: ' + requestValue);
-    return requestValue;
+    return api.request(options).run(processAttempt);
   },
 
   token: function(value) {
