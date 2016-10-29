@@ -11,32 +11,15 @@ var username = m.prop()
 var Login = {
 
   submit: function(username, password) {
-    console.log('submit(' + username + ', ' + password + ')');
-
-    var data = JSON.stringify({"username": username, "password": password});
-
-    console.log('data: '+ data);
-
-    var req = api.request({
-      method: "POST",
-      url: "/api/login",
-      data: {"username": username, "password": password}
-    });
-
-    console.log('error: ' + req.error());
-    req.run(function(result) {
-      console.log('result: ' + JSON.stringify(result));
-
-      /* TODO move to api.js */
-      var token = result.token;
-      console.log('saving / updating token: ' + token);
-      api.token(token);
-
-      if (api.hasValidToken()) {
-        /* show dashboard */
-        m.route.set('/dashboard');
-      }
-    });
+    var validCredentials = api.login(username, password);
+    if (validCredentials) {
+      /* show dashboard */
+      console.log('showing dashboard');
+      m.route.set('/dashboard');
+    } else {
+      /* TODO: show validation error */
+      console.log('invalid credentials');
+    }
   },
 
   view: function(vnode) {
@@ -72,7 +55,9 @@ var Login = {
           ])
         ]),
         m("div", [
-          m("button[id='login-btn']", {onclick: function(){ Login.submit(username(), password()) } }, "Log on")
+          m("button[id='login-btn']", {
+            onclick: function(){ Login.submit(username(), password()) }
+          }, "Log on")
         ])
       ])
 		]

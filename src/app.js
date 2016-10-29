@@ -17,7 +17,7 @@ m.route(document.body, '/', {
   },
 
   '/dashboard': {
-    onmatch: function(resolve) {
+    onmatch: function(resolve, args, requestedPath) {
       if (api.hasValidToken()) {
         console.log('has valid token - show dashboard');
         resolve(Dashboard);
@@ -27,10 +27,10 @@ m.route(document.body, '/', {
         m.route.set('/');
       }
     },
-    
-    render: function() {
+
+    render: function(vnode) {
       console.log('/dashboard render called');
-      return m(Layout, m(Dashboard));
+      return m(Layout, vnode);
     }
   }
 })

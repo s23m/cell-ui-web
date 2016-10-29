@@ -6,6 +6,7 @@ console.log('api.js');
 
 var api = {
 
+  /* Replacement for m.request when the API is involved */
   request: function(options) {
 
     options.config = function(xhr) {
@@ -14,7 +15,7 @@ var api = {
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     };
 
-    /* Want to clear token if we get a 401 on a request */
+    /* Want to clear token if we get a 401 on any request */
     options.extract = function(xhr) {
       var s = xhr.status;
       console.log('status: ' + status);
@@ -28,6 +29,28 @@ var api = {
     };
 
     return m.request(options);
+  },
+
+  /* Submits a login request and returns a boolean indicating whether the attempt was successful */
+  login: function(username, password) {
+    console.log('login(' + username + ', ' + password + ')');
+
+    var data = {"username": username, "password": password};
+    var options = {method: "POST", url: "/api/login", data: data};
+
+    return api.request(options).run(function(result) {
+      console.log('result: ' + JSON.stringify(result));
+
+      var token = result.token;
+      console.log('saving / updating token: ' + token);
+      api.token(token);
+      var validCredentials = api.hasValidToken();
+      console.log('validCredentials: ' + validCredentials);
+      return validCredentials;
+    }).catch(function(e) {
+      console.log('error: ' + e);
+      return false;
+    });
   },
 
   token: function(value) {
