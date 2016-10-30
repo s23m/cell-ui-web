@@ -64,3 +64,7 @@ input,
 .title {
   margin-right: 5px;
 }
+
+.error {
+  color: darkred;
+}

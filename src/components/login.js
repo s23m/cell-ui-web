@@ -2,11 +2,14 @@
 
 var m = require('mithril');
 var api = require('./api');
+var error = require('./error');
 
 console.log('login.js');
 
 var password = m.prop()
 var username = m.prop()
+
+var validationError = m.prop()
 
 /* See https://github.com/jpmonette/todomvc-mithril/blob/master/js/views/main-view.js */
 var watchInput = function(ontype, onenter, onescape) {
@@ -25,25 +28,37 @@ var handleLoginAttempt = function() {
   Login.submit(username(), password());
 }
 
+var errorView = function() {
+  return validationError() ? m(error, {text: validationError()}) : null;
+}
+
 var Login = {
 
   submit: function(user, pass) {
     var req = api.login(user, pass);
+
     req.run(function(validCredentials) {
       console.log('in login - validCredentials: ' + validCredentials);
       if (validCredentials) {
-        // clear fields and show dashboard
+        // clear fields and errors
         password('');
         username('');
+        validationError('');
+
+        // show dashboard
         console.log('showing dashboard');
         m.route.set('/dashboard');
       } else {
         console.log('invalid credentials');
+        validationError('Invalid credentials');
       }
     });
 
     req.error.run(function(data) {
-      console.log('in login - error: ' + data);
+      if (data) {
+        console.log('in login - error: ' + data);
+        validationError('Error communicating with the server');
+      }
     })
   },
 
@@ -93,8 +108,9 @@ var Login = {
             onclick: handleLoginAttempt
           }, "Log on")
         ])
-      ])
-		]
+      ]),
+      errorView()
+    ]
   }
 }
 
