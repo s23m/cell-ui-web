@@ -1,5 +1,6 @@
 'use strict';
 
+/* Only request function is used */
 var m = require('mithril');
 
 console.log('api.js');
@@ -31,7 +32,7 @@ var api = {
     return m.request(options);
   },
 
-  /* Submits a login request and returns a boolean indicating whether the attempt was successful */
+  /* Submits a login request and returns a reactive stream as the result */
   login: function(username, password) {
     var options = {
       method: 'POST',
@@ -56,6 +57,12 @@ var api = {
     return api.request(options).run(processAttempt);
   },
 
+  /* Removes the token */
+  logout: function() {
+    api.token(null);
+  },
+
+  /* Gets or sets the token */
   token: function(value) {
     if (arguments.length) {
       localStorage.setItem('token', value);
