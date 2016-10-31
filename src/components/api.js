@@ -65,13 +65,18 @@ var api = {
   /* Gets or sets the token */
   token: function(value) {
     if (arguments.length) {
-      localStorage.setItem('token', value);
+      if (value == null) {
+        localStorage.removeItem('token');
+      } else {
+        localStorage.setItem('token', value);
+      }
     }
     return localStorage.getItem('token');
   },
 
+  /* Simply checks if a token exists, without inspecting what it contains */
   hasValidToken: function() {
-    return 'null' !== localStorage.getItem('token');
+    return localStorage.getItem('token') != null;
   }
 };
 
